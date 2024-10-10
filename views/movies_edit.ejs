@@ -1,0 +1,54 @@
+<%- include('partials/header') %>
+<div class="container">
+  <h1>Edit the Movie</h1>
+  <form action="/movies/ <%= movie._id %>?_method=put" method="post">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        name="title"
+        value="<%= movie.title %>"
+        autofocus
+      />
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <input type="text" class="form-control" name="description" value="<%= movie.description %>"/>
+    </div>
+    <div class="mb-3">
+      <label for="director" class="form-label">Director</label>
+      <input type="text" class="form-control" name="director" value="<%= movie.director %>"/>
+    </div>
+    <div class="mb-3">
+      <label for="genre" class="form-label">Genre</label>
+      <select class="form-control" name="genre" id="genre">
+        <option disabled>-- Choose Below --</option>
+        <option <%= movie.genre === 'action' ? 'selected' : '' %>>  Action</option>
+        <option <%= movie.genre === 'horror' ? 'selected' : '' %>>Horror</option>
+        <option <%= movie.genre === 'fantasy' ? 'selected' : '' %>>Fantasy</option>
+        <option <%= movie.genre === 'romance' ? 'selected' : '' %>>Romance</option>
+        <option <%= movie.genre === 'thriller' ? 'selected' : '' %>>Thriller</option>
+        <option <%= movie.genre === 'drama' ? 'selected' : '' %>>Drama</option>
+        <option <%= movie.genre === 'comedy' ? 'selected' : '' %>>Comedy</option>
+        <option <%= movie.genre === 'non-Fiction' ? 'selected' : '' %>>Non-Fiction</option>
+        <option <%= movie.genre === 'sci-Fi' ? 'selected' : '' %>>Sci-Fi</option>
+      </select>
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="color" <%= movie.color ? 'checked' : ''%>/>
+        <label for="color" class="form-label">Color?</label>
+    </div>
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" class="form-control" name="date" value="<%= movie.date.toISOString().split('T')[0] %>"/>
+    </div>
+    <div class="mb-3">
+      <label class="form-check-label" for="image">Link to image</label>
+      <input type="text" class="form-control" name="image" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<%- include('partials/footer') %>

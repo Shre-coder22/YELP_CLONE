@@ -1,0 +1,30 @@
+.card{
+    border: 1px solid #ddd;
+    border-radius: 1rem;
+    width: 30%;
+}
+
+.card-img{
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.card-title{
+    text-align: center;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 1.8rem;
+}
+
+.card-desc{
+    font-family: "Lora" serif;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.image-container img{
+     width: 80%;
+}

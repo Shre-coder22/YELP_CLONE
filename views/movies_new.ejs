@@ -1,0 +1,54 @@
+<%- include('partials/header') %>
+<div class="container">
+  <h1>Add New Movie</h1>
+  <form action="/movies" method="post">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        name="title"
+        placeholder="eg. Avengers"
+        autofocus
+      />
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <input type="text" class="form-control" name="description" />
+    </div>
+    <div class="mb-3">
+      <label for="director" class="form-label">Director</label>
+      <input type="text" class="form-control" name="director" />
+    </div>
+    <div class="mb-3">
+      <label for="genre" class="form-label">Genre</label>
+      <select class="form-control" name="genre" id="genre">
+        <option disabled selected>-- Choose Below --</option>
+        <option>Action</option>
+        <option>Horror</option>
+        <option>Fantasy</option>
+        <option>Romance</option>
+        <option>Thriller</option>
+        <option>Drama</option>
+        <option>Comedy</option>
+        <option>Non-Fiction</option>
+        <option>Sci-Fi</option>
+      </select>
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="color" />
+        <label for="color" class="form-label">Color?</label>
+    </div>
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" class="form-control" name="date" />
+    </div>
+    <div class="mb-3">
+      <label class="form-check-label" for="image">Link to image</label>
+      <input type="text" class="form-control" name="image" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<%- include('partials/footer') %>

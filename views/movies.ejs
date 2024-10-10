@@ -1,0 +1,18 @@
+<%- include("partials/header") %>
+
+    <div class="container">
+        <div class="row mt-2">
+            <% movies.forEach((movie) => { %>
+                <div class="card m-3">
+                    <a href="/movies/<%= movie._id %>">
+                        <img class="card-img" src="<%= movie.image %>" alt="Movie Poster">
+                    </a>
+                    <h3 class="card-title mt-3"><%= movie.title %></h3>
+                    <p class="card-text card-desc mb-3"><%= movie.description %></p>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+<%- include("partials/footer") %>
+

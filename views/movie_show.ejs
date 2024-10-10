@@ -1,0 +1,65 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-6 image-container">
+            <img src="<%= foundMovie.image %>" alt="Movie Poster">
+        </div>
+        <div class="col-6 details-container">
+            <h1><%= foundMovie.title %></h1>
+            <p><%= foundMovie.description %></p>
+            <table>
+                <tbody>
+                    <tr>
+                        <th scope="row">Director:</th>
+                        <td><%= foundMovie.director %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Date:</th>
+                        <td><%= foundMovie.date %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Genre:</th>
+                        <td><%= foundMovie.genre %></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Color:</th>
+                        <td><%= foundMovie.color %></td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="/movies/<%= foundMovie._id %>/edit">
+                <button class="btn btn-outline-info btn-lg btn-block mb-2">Edit</button>
+            </a>
+            <form action="/movies/<%= foundMovie._id %>?_method=DELETE" method="post">
+                <button type="submit" class="btn btn-outline-danger btn-lg btn-block">Delete</button>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-3 comment-header">
+        COMMENT HEADER!
+    </div>
+    <a href="/movies/<%= foundMovie._id %>/comments/new">
+        <button class="btn btn-success btn-lg mt-3 mb-4">Add Comment</button>
+    </a>
+    <% comments.forEach((comment) => { %>
+        <div class="row comment-container py-2 border">
+            <div class="col-2 my-auto">
+                <%= comment.user.username %>
+            </div>
+            <div class="col-2 my-auto d-flex flex-wrap justify-content-center">
+                <a class="btn btn-sm btn-warning w-75 p-0 my-1" href="/movies/<%= foundMovie._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                <form class="w-75 py-1" action="/movies/<%= foundMovie._id %>/comments/<%= comment._id %>?_method=DELETE" method="post">
+                    <button class="btn btn-sm btn-danger w-100 p-0">
+                        Delete
+                    </button>
+                </form>
+            </div>
+            <div class="col-8 my-auto">
+                <%= comment.text %>
+            </div>
+        </div>
+    <% }) %>
+</div>
+
+<%- include('partials/footer') %>
