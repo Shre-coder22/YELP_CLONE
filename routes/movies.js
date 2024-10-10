@@ -13,6 +13,17 @@ router.get('/', async (req,res) => {
     }catch(err){
         console.log(err);
     }
+});
+
+router.get("/genre/:genre", async (req,res) => {
+    const validGenres = ['action','sci-fi','horror','fantasy','romance','non-fiction','drama','thriller','comedy'];
+    const lowerWords = req.params.genre.toLowerCase();
+    if(validGenres.includes(lowerWords)){
+        const movies = await Movie.find({genre: req.params.genre}).exec();
+        res.render('movies',{movies});
+    }else{
+        res.send('Please enter a valid genre!');
+    }
 })
 
 router.post('/', isLoggedIn ,async (req,res) => {

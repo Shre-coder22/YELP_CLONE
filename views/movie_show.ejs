@@ -28,12 +28,14 @@
                     </tr>
                 </tbody>
             </table>
-            <a href="/movies/<%= foundMovie._id %>/edit">
-                <button class="btn btn-outline-info btn-lg btn-block mb-2">Edit</button>
-            </a>
-            <form action="/movies/<%= foundMovie._id %>?_method=DELETE" method="post">
-                <button type="submit" class="btn btn-outline-danger btn-lg btn-block">Delete</button>
-            </form>
+            <% if(user && user.username === movie.owner.username) { %>
+                <a href="/movies/<%= foundMovie._id %>/edit">
+                    <button class="btn btn-outline-info btn-lg btn-block mb-2">Edit</button>
+                </a>
+                <form action="/movies/<%= foundMovie._id %>?_method=DELETE" method="post">
+                    <button type="submit" class="btn btn-outline-danger btn-lg btn-block">Delete</button>
+                </form>
+            <% } %>
         </div>
     </div>
     <div class="row mt-3 comment-header">
@@ -48,12 +50,16 @@
                 <%= comment.user.username %>
             </div>
             <div class="col-2 my-auto d-flex flex-wrap justify-content-center">
-                <a class="btn btn-sm btn-warning w-75 p-0 my-1" href="/movies/<%= foundMovie._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                <% if(user && user.username === comment.user.username) { %>
+                <a class="btn btn-sm btn-warning w-75 p-0 my-1" href="/movies/<%= foundMovie._id %>/comments/<%= comment._id %>/edit">
+                    Edit
+                </a>
                 <form class="w-75 py-1" action="/movies/<%= foundMovie._id %>/comments/<%= comment._id %>?_method=DELETE" method="post">
                     <button class="btn btn-sm btn-danger w-100 p-0">
                         Delete
                     </button>
                 </form>
+                <% } %>
             </div>
             <div class="col-8 my-auto">
                 <%= comment.text %>
