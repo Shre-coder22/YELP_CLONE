@@ -7,10 +7,12 @@ const checkMovieOwner = async (req,res,next) => {
             next();
         }
         else {
+            req.flash("In","You dont own the movie!");
             res.redirect("back");
         }
     }
     else {
+        req.flash("error","Not logged in buddy!");
         res.redirect('/login');
     }
 }
