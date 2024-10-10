@@ -74,3 +74,16 @@
     </div>
   </div>
 </nav>
+
+<% if(successMessage && successMessage>0) { %>
+<div class="alert alert-warning" role="alert">
+  <%= successMessage %>
+</div>
+<% } %>
+
+<% if(errorMessage && errorMessage>0) { %>
+<div class="alert alert-warning" role="alert">
+  <%= errorMessage %>
+</div>
+<% } %>
+

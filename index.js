@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+const flash = require('connect-flash');
 const morgan = require('morgan');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
@@ -33,6 +34,8 @@ app.use(expressSession({
     saveUninitialized: false
 }));
 
+app.use(flash());
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(User.serializeUser());
@@ -41,6 +44,8 @@ passport.use(new localStrategy(User.authenticate()));
 
 app.use((req,res,next) => {
     res.locals.user = req.user;
+    res.locals.errorMessage = req.flash("error");
+    res.locals.successMessage = req.flash("success");
     next();
 })
 

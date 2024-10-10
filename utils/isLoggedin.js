@@ -3,6 +3,7 @@ const isLoggedIn = (req,res,next) => {
         return next();
     }
     else{
+        req.flash("error", "You are not logged in!");
         res.redirect('/login');
     }
 }
