@@ -14,7 +14,7 @@ router.post('/signup', async (req,res) => {
             email: req.body.email
         }), req.body.password)
 
-        console.log(newUser);
+        req.flash("success",`Signed you up as ${newUser.username}`)
 
         passport.authenticate('local')(req,res, () => {
             res.redirect('/movies');
@@ -31,11 +31,13 @@ router.get('/login', (req,res) => {
 router.post('/login', passport.authenticate('local' , {
     successRedirect: '/movies',
     failureRedirect: '/login',
-    failureMessage: "Wrong Credentials"
+    failureFlash: true,
+    successFlash: "Logged in successfully"
 }));
 
 router.post('/login', (req,res) => {
     req.logout();
+    req.flash("success","Logged out!!")
     res.redirect('/movies');
 });
 

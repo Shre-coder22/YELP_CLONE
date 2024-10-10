@@ -75,15 +75,35 @@
   </div>
 </nav>
 
-<% if(successMessage && successMessage>0) { %>
-<div class="alert alert-warning" role="alert">
-  <%= successMessage %>
+<div class="container">
+  <% if(successMessage && successMessage>0) { %>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <%= successMessage %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>  
+  </div>
+  <% } %>
+  
+  <% if(errorMessage && errorMessage>0) { %>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <%= errorMessage %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>  
+  </div>
+  <% } %>
 </div>
-<% } %>
 
-<% if(errorMessage && errorMessage>0) { %>
-<div class="alert alert-warning" role="alert">
-  <%= errorMessage %>
+  <% if(inMessage && inMessage>0) { %>
+  <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <%= inMessage %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>  
+  </div>
+  <% } %>
 </div>
-<% } %>
+
+
 

@@ -20,11 +20,11 @@ router.post('/', isLoggedIn ,async (req,res) => {
             text:req.body.text,
             movieId:req.body._id
         })
-        console.log(comment);
+        req.flash("success","Comment created!");
         res.redirect(`/movies/${req.body.movieId}`);
     }
     catch(err) {
-        console.log(err);
+        req.flash("error","Problem creating comment!")
         res.redirect(`/movies/${req.body.movieId}`);
     }
 })
@@ -35,25 +35,25 @@ router.get('/:commentId/edit', checkCommentOwner ,async (req,res) => {
         const comment = await Comment.findById(req.params.commentId).exec()
         res.render("comments_edit",{movie,comment});
     } catch (error) {
-        console.log(error);
-        res.send("Broken!!!!");
+        res.redirect("back");
     }
 })
 
 router.put('/:commentId', checkCommentOwner ,async (req,res) => {
     try {
         const comment = await Comment.findByIdAndUpdate(req.params.commentId, {text: req.body.text}, {new:true});
+        req.flash("In","Comment edited!");
         res.redirect(`/movies/${req.params.id}`);
     } catch (error) {
-        console.log(error);
-        res.send("Broken!!!!");
+        req.flash("error","Problem editing comment!")
+        res.send("back");
     }
 })
 
 router.delete('/:commentId', checkCommentOwner , async (req,res) => {
     try {
         const comment = await Comment.findByIdAndDelete(req.params.commentId);
-        console.log(comment);
+        req.flash("success","Comment deleted!");
         res.redirect(`/movies/${req.params.id}`);
     } catch (error) {
         console.log(error);

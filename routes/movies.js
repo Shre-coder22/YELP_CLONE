@@ -44,12 +44,13 @@ router.post('/', isLoggedIn ,async (req,res) => {
     }
 
     try {
-        const movie = await Movie.create(newMovie)
-        console.log(movie);
+        const movie = await Movie.create(newMovie);
+        req.flash("success","Movie added successfully.");
         res.redirect('/movies/'+ movie._id);
 
     } catch (err) {
-        console.log(err);
+        req.flash("error","Problem adding movie! ");
+        res.redirect("/movies");
     }
 
 })
@@ -105,19 +106,23 @@ router.put("/:id", checkMovieOwner , async (req,res) => {
     }
     try {
         const movie = await Movie.findByIdAndUpdate(req.params.id,movieBody,{new:true}).exec()
-        res.redirect(`/movies/${req.params.id}`)
+        req.flash("In","Movie updated yo!");
+        res.redirect(`/movies/${req.params.id}`);
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        req.flash("error","Error updating movie.");
+        res.redirect("/movies");
     }
 })
 
 router.delete('/:id', checkMovieOwner , async (req,res) => {
     try{
         const deletedMovie = await Movie.findByIdAndDelete(req.params.id).exec()
-        console.log("Deleted:",deletedMovie);
+        req.flash("In","Movie deleted buddy!");
         res.redirect('/movies')
     }catch(err) {
-        console.log(err);
+        req.flash("error","Error deleting movie.");
+        res.redirect("back");
     }
 })
 
