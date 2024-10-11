@@ -79,3 +79,16 @@ body, html {
     background-color: #ffffff;
     color: #141e30;
 }
+
+.back-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: blue;
+    color: white;
+    text-decoration: none;
+}
+
+.back-button:hover {
+    opacity: 0.8;
+}

@@ -1,5 +1,30 @@
 <%- include("partials/header") %>
 
-    <h1> Accout Page. </h1>
+<div class="container mt-4">
+    <h1>Your Account</h1>
+    <h3>Posted Movies</h3>
+    <div class="row mt-2">
+        <% if (movies.length > 0) { %>
+            <% movies.forEach((movie) => { %>
+                <div class="card m-3 col-md-4">
+                    <a href="/movies/<%= movie._id %>">
+                        <img class="card-img-top" src="<%= movie.image %>" alt="Movie Poster">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= movie.title %></h5>
+                        <p class="card-text"><%= movie.description %></p>
+                        <a href="/movies/<%= movie._id %>/edit" class="btn btn-warning">Edit</a>
+                        <form action="/movies/<%= movie._id %>?_method=DELETE" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>You have not posted any movies yet.</p>
+        <% } %>
+    </div>
+    <a href="/movies" class="btn btn-primary">Back to All Movies</a>
+</div>
 
-    <%- include("partials/footer") %>
+<%- include("partials/footer") %>

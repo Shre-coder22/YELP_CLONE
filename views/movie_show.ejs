@@ -30,12 +30,28 @@
             </table>
             <% if(user && user.username === foundMovie.owner.username) { %>
                 <a href="/movies/<%= foundMovie._id %>/edit">
-                    <button class="btn btn-outline-info btn-lg btn-block mb-2">Edit</button>
+                    <button class="btn btn-outline-warning btn-lg btn-block mb-2">Edit</button>
                 </a>
                 <form action="/movies/<%= foundMovie._id %>?_method=DELETE" method="post">
-                    <button type="submit" class="btn btn-outline-danger btn-lg btn-block">Delete</button>
+                    <button type="submit" class="btn btn-outline-danger btn-lg btn-block mb-2">Delete</button>
                 </form>
             <% } %>
+            <% if (user) { %>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" 
+                           id="watchedCheckbox" 
+                           <%= user.watchedMovies.includes(foundMovie._id) ? 'checked' : '' %> 
+                           data-movie-id="<%= foundMovie._id %>">
+                    <label class="form-check-label" for="watchedCheckbox">
+                        Watched
+                    </label>
+                </div>
+            <% } else { %>
+                <p class="mb-2">Please <a href="/login">login</a> to mark this movie as watched.</p>
+            <% } %>
+            <form action="/movies/<%= foundMovie._id %>/recommended_movies" method="GET">
+                <button class="btn btn-outline-info btn-lg btn-block mb-2" type="submit">See Recommended Movies</button>
+            </form>
         </div>
     </div>
     <div class="row">

@@ -1,15 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Select DOM elements
     const score = document.getElementById("score");
     const upvoteBtn = document.getElementById("upvote_btn"); 
     const downvoteBtn = document.getElementById("downvote_btn"); 
 
-    // Debugging logs
-    console.log("Score element:", score);          // Should log the score element
-    console.log("Upvote button:", upvoteBtn);      // Should log the upvote button
-    console.log("Downvote button:", downvoteBtn);  // Should log the downvote button
-
-    // Function to send the vote
     const sendVote = async (voteType) => {
         const options = {
             method: "POST",
@@ -19,19 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         // Prepare the body based on vote type
-        if (voteType === 'up') {
-            options.body = JSON.stringify({ voteType: "up", movieId });
-        } else if (voteType === 'down') {
-            options.body = JSON.stringify({ voteType: "down", movieId });
-        } else {
-            throw "Invalid vote type";
-        }
+        options.body = JSON.stringify({ voteType, movieId });
 
         // Send vote to the backend
         await fetch("/movies/vote", options)
             .then(data => data.json())
             .then(res => {
-                console.log(res);
                 handleVote(res.score, res.code); // Update the UI based on the response
             })
             .catch(err => {
@@ -39,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     };
 
-    // Function to handle the UI update after voting
     const handleVote = (newScore, code) => {
         if (newScore === undefined) {
             console.error('Received undefined score from server!');
@@ -68,12 +53,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Add event listeners to the upvote and downvote buttons
-    upvoteBtn.addEventListener("click", async function () {
-        sendVote("up");
-    });
+    upvoteBtn.addEventListener("click", () => sendVote("up"));
+    downvoteBtn.addEventListener("click", () => sendVote("down"));
+});
 
-    downvoteBtn.addEventListener("click", async function () {
-        sendVote("down");
-    });
+document.getElementById('watchedCheckbox').addEventListener('change', function() {
+    const movieId = this.getAttribute('data-movie-id');
+    fetch(`/movies/${movieId}/toggle-watch`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(response => response.json())
+      .then(data => {
+          if (!data.success) {
+              alert('Failed to update watch status.');
+          }
+      }).catch(err => console.error(err));
 });

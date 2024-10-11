@@ -3,35 +3,38 @@ const router = express.Router();
 const User = require('../models/user');
 const passport = require('passport');
 
-
-router.post('/signup', async (req,res) => {
+// Handle user signup
+router.post('/signup', async (req, res) => {
     try {
         const newUser = await User.register(new User({
             username: req.body.username,
             email: req.body.email
-        }), req.body.password)
+        }), req.body.password);
 
-        req.flash("success",`Signed you up as ${newUser.username}`)
+        req.flash("success", `Signed you up as ${newUser.username}`);
 
-        passport.authenticate('local')(req,res, () => {
-            res.redirect('/movies');
+        passport.authenticate('local')(req, res, () => {
+            res.redirect('/movies'); // Redirect to movies after signup
         });
     } catch (error) {
         console.log(error);
     }
 });
 
-router.get('/login', (req,res) => {
+// Render the login page
+router.get('/login', (req, res) => {
     res.render('login');
 });
 
-router.post('/login', passport.authenticate('local' , {
+// Handle user login
+router.post('/login', passport.authenticate('local', {
     successRedirect: '/movies',
     failureRedirect: '/login',
     failureFlash: true,
     successFlash: "Logged in successfully"
 }));
 
+// Handle user logout
 router.get('/logout', (req, res) => {
     req.logout((err) => {
         if (err) {
@@ -40,8 +43,8 @@ router.get('/logout', (req, res) => {
             return res.redirect('/movies');
         }
         req.flash("success", "Logged out successfully!");
-        res.redirect('/');
+        res.redirect('/'); // Redirect to home after logout
     });
 });
 
-module.exports = router;
+module.exports = router; // Export the router

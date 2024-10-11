@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
-const plm = require('passport-local-mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new mongoose.Schema({
-    email:{type:String, required: true, unique: true},
-    username:{type:String, required: true, unique: true},
+    username: { type: String, required: true }, // Required username field
+    email: { type: String, required: true }, // Required email field
+    watchedMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }] // Movies watched by the user
 });
 
-userSchema.plugin(plm);
+userSchema.plugin(passportLocalMongoose); // Add Passport-Local Mongoose plugin for authentication
 
-module.exports = mongoose.model("User",userSchema);
+const User = mongoose.model('User', userSchema); // Create the User model
+
+module.exports = User; // Export the User model

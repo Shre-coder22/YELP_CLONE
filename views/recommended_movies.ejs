@@ -1,0 +1,19 @@
+<%- include("partials/header") %>
+
+<div class="container">
+    <h1>Recommended Movies</h1>
+    <div class="row mt-2">
+        <% recommendedMovies.forEach(function(movie) { %>
+            <div class="card m-3">
+                <a href="/movies/<%= movie._id %>">
+                    <img class="card-img" src="<%= movie.image %>" alt="Movie Poster">
+                </a>
+                <h3 class="card-title mt-3"><%= movie.title %></h3>
+                <p class="card-text card-desc mb-3">Genres: <%= Array.isArray(movie.genre) ? movie.genre.join(', ') : movie.genre %></p>
+            </div>
+        <% }); %>
+    </div>
+    <a href="/movies" class="back-button">Back to All Movies</a>
+</div>
+
+<%- include("partials/footer") %>

@@ -48,6 +48,12 @@
         <% } %> 
 
         <% if(user) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/account">Account</a>
+        </li>
+        <% } %> 
+
+        <% if(user) { %>
           <li class="nav-item">
             <a class="nav-link" href="/logout">Log Out</a>
           </li>
@@ -70,37 +76,32 @@
       </form>
     </div>
   </div>
-</nav>
-
+</nav>   
 <div class="container">
   <% if(successMessage && successMessage>0) { %>
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <%= successMessage %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>  
-  </div>
+    <div class="alert alert-warning  fade show" role="alert">
+      <%= successMessage %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>  
+    </div>
   <% } %>
-  
+    
   <% if(errorMessage && errorMessage>0) { %>
-  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <%= errorMessage %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>  
-  </div>
+    <div class="alert alert-warning fade show" role="alert">
+      <%= errorMessage %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>  
+    </div>
   <% } %>
-</div>
 
   <% if(inMessage && inMessage>0) { %>
-  <div class="alert alert-info alert-dismissible fade show" role="alert">
-    <%= inMessage %>
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>  
-  </div>
+    <div class="alert alert-info fade show" role="alert">
+      <%= inMessage %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>  
+    </div>
   <% } %>
 </div>
-
-
-
