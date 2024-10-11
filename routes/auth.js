@@ -3,9 +3,6 @@ const router = express.Router();
 const User = require('../models/user');
 const passport = require('passport');
 
-router.get('/signup', (req,res) => {
-    res.render('signup')
-});
 
 router.post('/signup', async (req,res) => {
     try {
@@ -43,7 +40,7 @@ router.get('/logout', (req, res) => {
             return res.redirect('/movies');
         }
         req.flash("success", "Logged out successfully!");
-        res.redirect('/movies');
+        res.redirect('/');
     });
 });
 

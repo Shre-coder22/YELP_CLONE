@@ -6,10 +6,13 @@ const isLoggedIn = require('../utils/isLoggedin');
 const checkCommentOwner = require('../utils/checkComOwner');
 
 router.get('/new', isLoggedIn , (req,res) => {
-    res.render("comments_new",{movie_id: req.params.id})
+    const movieId = req.params.id.trim();
+    res.render("comments_new",{movie_id: movieId});
 })
 
 router.post('/', isLoggedIn ,async (req,res) => {
+    const movieId = req.params.id.trim();
+    console.log(movieId);
     
     try{
         const comment = await Comment.create({
@@ -18,7 +21,7 @@ router.post('/', isLoggedIn ,async (req,res) => {
                 username: req.user.username
             },
             text:req.body.text,
-            movieId:req.body._id
+            movieId:movieId
         })
         req.flash("success","Comment created!");
         res.redirect(`/movies/${req.body.movieId}`);
@@ -30,9 +33,11 @@ router.post('/', isLoggedIn ,async (req,res) => {
 })
 
 router.get('/:commentId/edit', checkCommentOwner ,async (req,res) => {
+    const movieId = req.params.id.trim();
+    const comId = req.params.commentId.trim();
     try {
-        const movie = await Movie.findById(req.params.id).exec()
-        const comment = await Comment.findById(req.params.commentId).exec()
+        const movie = await Movie.findById(movieId).exec()
+        const comment = await Comment.findById(comId).exec()
         res.render("comments_edit",{movie,comment});
     } catch (error) {
         res.redirect("back");
@@ -40,10 +45,12 @@ router.get('/:commentId/edit', checkCommentOwner ,async (req,res) => {
 })
 
 router.put('/:commentId', checkCommentOwner ,async (req,res) => {
+    const movieId = req.params.id.trim();
+    const comId = req.params.commentId.trim();
     try {
-        const comment = await Comment.findByIdAndUpdate(req.params.commentId, {text: req.body.text}, {new:true});
+        const comment = await Comment.findByIdAndUpdate(comId, {text: req.body.text}, {new:true});
         req.flash("In","Comment edited!");
-        res.redirect(`/movies/${req.params.id}`);
+        res.redirect(`/movies/${movieId}`);
     } catch (error) {
         req.flash("error","Problem editing comment!")
         res.send("back");

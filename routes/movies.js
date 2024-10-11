@@ -26,13 +26,44 @@ router.get("/genre/:genre", async (req,res) => {
     }
 });
 
+router.post('/', isLoggedIn ,async (req,res) => {
+    console.log(req.body);
+    // const genre = req.body.genre.toLowerCase();
+    const newMovie = {
+        title:req.body.title,
+        description:req.body.description,
+        image:req.body.image,
+        director:req.body.director,
+        date:req.body.date,
+        color:!!req.body.color,
+        genre:req.body.genre,
+        owner: {
+            id: req.user._id,
+            username: req.user.username 
+        },
+        upvotes: [req.user.username],
+        downvotes: [req.user.username]
+    }
+
+    try {
+        const movie = await Movie.create(newMovie);
+        req.flash("success","Movie added successfully.");
+        res.redirect('/movies/'+ movie._id);
+
+    } catch (err) {
+        req.flash("error","Problem adding movie! ");
+        res.redirect("/movies");
+    }
+
+})
+
 router.post("/vote", isLoggedIn,  async(req,res) => {
     const movie = await Movie.findById(req.body.movieId);
     const alreadyUpvoted = movie.upvotes.indexOf(req.user.username);
     const alreadyDownvoted = movie.downvotes.indexOf(req.user.username);
     let response = {};
     let newScore;
-
+    
     if(alreadyDownvoted === -1 && alreadyUpvoted === -1){
         if(req.body.voteType === 'up'){
             movie.upvotes.push(req.user.username);
@@ -68,12 +99,12 @@ router.post("/vote", isLoggedIn,  async(req,res) => {
     }else if(alreadyDownvoted >= 0){
         if(req.body.voteType === 'up'){
             movie.downvotes.splice(alreadyDownvoted, 1);
+            movie.upvotes.push(req.user.username);
             newScore = movie.upvotes.length - movie.downvotes.length;
             response = {message: 'Upvoted!',code: 1,score:newScore};
 
         }else if(req.body.voteType === 'down'){
             movie.downvotes.splice(alreadyDownvoted, 1);
-            movie.upvotes.push(req.user.username);
             newScore = movie.upvotes.length - movie.downvotes.length;
             response = {message: 'Downvote removed!',code: 0,score:newScore};
             
@@ -91,36 +122,6 @@ router.post("/vote", isLoggedIn,  async(req,res) => {
     console.log(response);
 })
 
-router.post('/', isLoggedIn ,async (req,res) => {
-    console.log(req.body);
-    const genre = req.body.genre.toLowerCase();
-    const newMovie = {
-        title:req.body.title,
-        description:req.body.description,
-        image:req.body.image,
-        director:req.body.director,
-        date:req.body.date,
-        color:!!req.body.color,
-        genre,
-        owner: {
-            id: req.user._id,
-            username: req.user.username 
-        },
-        upvotes: [req.user.username],
-        downvotes: []
-    }
-
-    try {
-        const movie = await Movie.create(newMovie);
-        req.flash("success","Movie added successfully.");
-        res.redirect('/movies/'+ movie._id);
-
-    } catch (err) {
-        req.flash("error","Problem adding movie! ");
-        res.redirect("/movies");
-    }
-
-})
 
 router.get('/new', isLoggedIn , (req,res) => {
     res.render("movies_new");
@@ -161,7 +162,6 @@ router.get('/:id/edit', checkMovieOwner , async (req,res) => {
 })
 
 router.put("/:id", checkMovieOwner , async (req,res) => {
-    const genre = req.body.genre.toLowerCase();
     const movieBody = {
         title:req.body.title,
         description:req.body.description,
@@ -169,16 +169,17 @@ router.put("/:id", checkMovieOwner , async (req,res) => {
         director:req.body.director,
         date:req.body.date,
         color:!!req.body.color,
-        genre,
+        genre:req.body.genre,
         owner: {
             id: req.user._id,
             username: req.user.username 
         }
     }
+    const movieId = req.params.id.trim();
     try {
-        const movie = await Movie.findByIdAndUpdate(req.params.id,movieBody,{new:true}).exec()
+        const movie = await Movie.findByIdAndUpdate(movieId,movieBody,{new:true}).exec()
         req.flash("In","Movie updated yo!");
-        res.redirect(`/movies/${req.params.id}`);
+        res.redirect(`/movies/${movieId}`);
     } catch (error) {
         console.log(error);
         req.flash("error","Error updating movie.");

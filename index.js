@@ -28,12 +28,14 @@ app.use(express.static('public'));
 app.use(express.json({
     type: ['application/json','text/plain']
 }))
+app.use(express.urlencoded({ extended: true }));
+
 
 // app.use(morgan('tiny'))
 app.use(bodyParser.urlencoded({extended:true})); 
 app.use(methodOverride('_method'));
 app.use(expressSession({
-    secret: "jodbolte",
+    secret: "jodboltenbfalj2pqnfioa98hawldnalndabfadlnf9",
     resave: false,
     saveUninitialized: false
 }));

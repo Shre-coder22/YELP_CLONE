@@ -19,9 +19,5 @@ const movieSchema = new mongoose.Schema({
     downvotes: [String]
 });
 
-movieSchema.index({
-    '$**':'text'
-});
- 
 
 module.exports = mongoose.model("Movie", movieSchema);;

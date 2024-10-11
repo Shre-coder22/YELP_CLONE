@@ -1,8 +1,9 @@
 const Movie = require('../models/movies');
 
 const checkMovieOwner = async (req,res,next) => {
+    const movieId = req.params.id.trim();
     if(req.isAuthenticated()) {
-        const movie = await Movie.findById(req.params.id).exec()
+        const movie = await Movie.findById(movieId).exec()
         if(movie.owner.id.equals(req.user._id) ) {
             next();
         }

@@ -1,14 +1,19 @@
 body, html {
     height: 100%;
     margin: 0;
-    background-color: #141e30; /* Dark background */
     font-family: 'Arial', sans-serif;
-    color: #ddd;
+}
+.navbar-lo{
+    background-color:rgb(126, 195, 228);
+}
+.navbar-li a{
+    color: #2d0c42;
 }
 
-
 .card{
-    border: 1px solid #ddd;
+    background-color: rgb(126, 195, 228);
+    color: #2d0c42;
+    border: 1px solid #010110;
     border-radius: 1rem;
     width: 30%;
 }
