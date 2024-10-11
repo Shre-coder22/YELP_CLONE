@@ -1,3 +1,12 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: #141e30; /* Dark background */
+    font-family: 'Arial', sans-serif;
+    color: #ddd;
+}
+
+
 .card{
     border: 1px solid #ddd;
     border-radius: 1rem;
@@ -27,4 +36,41 @@
 
 .image-container img{
      width: 80%;
+}
+
+
+.landing-container {
+    background: linear-gradient(135deg, #141e30, #243b55); /* Two-color theme */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.6); /* Dark overlay */
+    color: white;
+}
+
+.h-lan {
+    font-size: 3rem;
+}
+
+.p-lan {
+    font-size: 1.5rem;
+}
+
+.btn-lan {
+    background-color: #ff7e5f;
+    border-color: #ff7e5f;
+}
+
+.btn-lan:hover {
+    background-color: #ff4b1f;
+    border-color: #ff4b1f;
+}
+
+.btn-lan-log:hover {
+    background-color: #ffffff;
+    color: #141e30;
 }

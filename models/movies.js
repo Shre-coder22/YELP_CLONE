@@ -22,7 +22,6 @@ const movieSchema = new mongoose.Schema({
 movieSchema.index({
     '$**':'text'
 });
+ 
 
-const Movie = mongoose.model("movie", movieSchema);
-
-module.exports = Movie;
+module.exports = mongoose.model("Movie", movieSchema);;

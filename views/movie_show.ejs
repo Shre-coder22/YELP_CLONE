@@ -28,7 +28,7 @@
                     </tr>
                 </tbody>
             </table>
-            <% if(user && user.username === movie.owner.username) { %>
+            <% if(user && user.username === foundMovie.owner.username) { %>
                 <a href="/movies/<%= foundMovie._id %>/edit">
                     <button class="btn btn-outline-info btn-lg btn-block mb-2">Edit</button>
                 </a>
@@ -43,13 +43,15 @@
             <button class="btn btn-success btn-lg mt-3 mb-4">Add Comment</button>
         </a>
         <div class="col-2">
-            <% if (user && movie.upvotes.indexOf(user.username) >= 0) { %>
+            <% if (user && foundMovie.upvotes.indexOf(user.username) >= 0) { %>
                 <button id="upvote_btn" class="btn btn-success btn-lg mt-3"> + </button>
             <% } else if (user) { %>
                 <button id="upvote_btn" class="btn btn-outline-success btn-lg mt-3"> + </button>
             <% } %>
-            <span id="score" class="mt-1 mx-2"> <%= movie.upvotes.length - movie.downvotes.length %> </span>
-            <% if (user && movie.downvotes.indexOf(user.username) >= 0) { %>
+            <% if(user){ %>
+                <span id="score" class="mt-1 mx-2"> <%= foundMovie.upvotes.length - foundMovie.downvotes.length %> </span>
+            <% } %>
+            <% if (user && foundMovie.downvotes.indexOf(user.username) >= 0) { %>
                 <button id="downvote_btn" class="btn btn-danger btn-lg mt-3"> - </button>
             <% } else if (user) { %>
                 <button id="downvote_btn" class="btn btn-outline-danger btn-lg mt-3"> - </button>
@@ -80,7 +82,7 @@
     <% }) %>
 </div>
 <script>
-    var movieId = "<%- movie._id %>"
+    var movieId = "<%- foundMovie._id %>"
 </script>
 <script src="/js/movies_show.js"></script>
 

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Movie = require('../models/movies');
 
 const commentSchema = new mongoose.Schema({
     user: {
@@ -15,7 +14,5 @@ const commentSchema = new mongoose.Schema({
         ref:"Movie"
     }
 });
-
-const Comment = mongoose.model("comment", commentSchema);
-
-module.exports = Comment;
+ 
+module.exports = mongoose.model("Comment", commentSchema);

@@ -4,8 +4,7 @@ const Movie = require('../models/movies');
 const Comment = require('../models/comment');
 const isLoggedIn = require('../utils/isLoggedin');
 const checkMovieOwner = require('../utils/checkOwner');
-
-
+const mongoose = require('mongoose');
 
 router.get('/', async (req,res) => {
     try{
@@ -32,57 +31,64 @@ router.post("/vote", isLoggedIn,  async(req,res) => {
     const alreadyUpvoted = movie.upvotes.indexOf(req.user.username);
     const alreadyDownvoted = movie.downvotes.indexOf(req.user.username);
     let response = {};
+    let newScore;
 
     if(alreadyDownvoted === -1 && alreadyUpvoted === -1){
         if(req.body.voteType === 'up'){
             movie.upvotes.push(req.user.username);
-            movie.save();
-            response = {message: 'Upvoted!',code: 1};
+            newScore = movie.upvotes.length - movie.downvotes.length;
+            response = {message: 'Upvoted!',code: 1,score:newScore};
             
         }else if(req.body.voteType === 'down'){
             movie.downvotes.push(req.user.username);
-            movie.save();
-            response= {message: 'Downvoted!',code: -1};
-
+            newScore = movie.upvotes.length - movie.downvotes.length;
+            response= {message: 'Downvoted!',code: -1,score:newScore};
+            
         }else{
             response.message = 'Error voting!';
-
+            
         }
+        await movie.save();
     }else if(alreadyUpvoted >= 0){
         if(req.body.voteType === 'up'){
             movie.upvotes.splice(alreadyUpvoted, 1);
-            response = {message: 'Upvote removed!',code: 0};
+            newScore = movie.upvotes.length - movie.downvotes.length;
+            response = {message: 'Upvote removed!',code: 0,score:newScore};
 
         }else if(req.body.voteType === 'down'){
             movie.upvotes.splice(alreadyUpvoted, 1);
             movie.downvotes.push(req.user.username);
-            response = {message: 'Downvoted!',code: -1};
+            newScore = movie.upvotes.length - movie.downvotes.length;
+            response = {message: 'Downvoted!',code: -1,score:newScore};
             
         }else{
             response = {message: 'err',code: "err"};
         }
-        movie.save();
+        await movie.save();
     }else if(alreadyDownvoted >= 0){
         if(req.body.voteType === 'up'){
             movie.downvotes.splice(alreadyDownvoted, 1);
-            response = {message: 'Upvoted!',code: 1};
+            newScore = movie.upvotes.length - movie.downvotes.length;
+            response = {message: 'Upvoted!',code: 1,score:newScore};
 
         }else if(req.body.voteType === 'down'){
             movie.downvotes.splice(alreadyDownvoted, 1);
             movie.upvotes.push(req.user.username);
-            response = {message: 'Downvote removed!',code: 0};
+            newScore = movie.upvotes.length - movie.downvotes.length;
+            response = {message: 'Downvote removed!',code: 0,score:newScore};
             
         }else{
             response.message = 'Error 3'
-            response = {message: 'err!',code: 'err'};
+            response = {message: 'err!',code: 'err',score:'err'};
         }
-        movie.save();
+        await movie.save();
     }else{
-        response = {message: 'ERUR!',code: 'err'};
+        response = {message: 'ERUR!',code: 'err',score:'err'};
     }
-    req.score = movie.upvotes.length - movie.downvotes.length;
+    console.log("New score sent to client:", newScore); 
 
     res.json(response);
+    console.log(response);
 })
 
 router.post('/', isLoggedIn ,async (req,res) => {
@@ -136,8 +142,12 @@ router.get('/search', async(req,res) => {
 
 router.get('/:id',async (req,res) => {
     try {
-        const foundMovie = await Movie.findById(req.params.id).exec()
-        const comments = await Comment.find({movieId:req.params.id})
+        const id = req.params.id;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send('Invalid ID');
+        }
+        const foundMovie = await Movie.findById(id).exec();
+        const comments = await Comment.find({movieId:foundMovie._id}).exec();
         res.render("movie_show",{foundMovie,comments})
     } catch (error) {
         console.log(error);
