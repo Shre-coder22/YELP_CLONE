@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const passport = require('passport');
 const localStrategy = require('passport-local').Strategy;
 const expressSession = require('express-session'); 
@@ -25,7 +25,11 @@ mongoose.connect(config.db.connection);
 
 app.set('view engine','ejs');
 app.use(express.static('public'));
-app.use(morgan('tiny'))
+app.use(express.json({
+    type: ['application/json','text/plain']
+}))
+
+// app.use(morgan('tiny'))
 app.use(bodyParser.urlencoded({extended:true})); 
 app.use(methodOverride('_method'));
 app.use(expressSession({

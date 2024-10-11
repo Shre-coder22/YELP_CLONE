@@ -24,6 +24,12 @@ router.get("/genre/:genre", async (req,res) => {
     }else{
         res.send('Please enter a valid genre!');
     }
+});
+
+router.post("/vote", isLoggedIn, (req,res) => {
+    res.json({
+        message: "Voted!"
+    });
 })
 
 router.post('/', isLoggedIn ,async (req,res) => {
@@ -40,7 +46,9 @@ router.post('/', isLoggedIn ,async (req,res) => {
         owner: {
             id: req.user._id,
             username: req.user.username 
-        }
+        },
+        upvotes: [req.user.username],
+        downvotes: []
     }
 
     try {
@@ -71,7 +79,7 @@ router.get('/search', async(req,res) => {
         console.log(error);
         res.send('Broken search');
     }
-})
+});
 
 router.get('/:id',async (req,res) => {
     try {

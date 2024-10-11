@@ -38,12 +38,20 @@
             <% } %>
         </div>
     </div>
-    <div class="row mt-3 comment-header">
-        COMMENT HEADER!
+    <div class="row">
+        <a href="/movies/<%= foundMovie._id %>/comments/new" class="col-3">
+            <button class="btn btn-success btn-lg mt-3 mb-4">Add Comment</button>
+        </a>
+        <div class="col-2">
+            <% if (user) { %>
+                <button id="upvote_btn" class="btn btn-outline-success btn-lg mt-3"> + </button>
+            <% } %>
+            <span id="score" class="mt-1 mx-2"> 10 </span>
+            <% if (user) { %>
+                <button id="downvote_btn" class="btn btn-outline-success btn-lg mt-3"> - </button>
+            <% } %>
+        </div>
     </div>
-    <a href="/movies/<%= foundMovie._id %>/comments/new">
-        <button class="btn btn-success btn-lg mt-3 mb-4">Add Comment</button>
-    </a>
     <% comments.forEach((comment) => { %>
         <div class="row comment-container py-2 border">
             <div class="col-2 my-auto">
@@ -67,5 +75,7 @@
         </div>
     <% }) %>
 </div>
+
+<script src="/js/movies_show.js"></script>
 
 <%- include('partials/footer') %>
