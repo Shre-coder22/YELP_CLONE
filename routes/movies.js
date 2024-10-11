@@ -26,10 +26,56 @@ router.get("/genre/:genre", async (req,res) => {
     }
 });
 
-router.post("/vote", isLoggedIn, (req,res) => {
-    res.json({
-        message: "Voted!"
-    });
+router.post("/vote", isLoggedIn,  async(req,res) => {
+    const movie = await Movie.findById(req.body.movieId);
+    const alreadyUpvoted = movie.upvotes.indexOf(req.user.username);
+    const alreadyDownvoted = movie.downvotes.indexOf(req.user.username);
+    let response = {};
+
+    if(alreadyDownvoted === -1 && alreadyUpvoted === -1){
+        if(req.body.voteType === 'up'){
+            movie.upvotes.push(req.user.username);
+            movie.save();
+            response.message = 'Upvoted!';
+            
+        }else if(req.body.voteType === 'down'){
+            movie.downvotes.push(req.user.username);
+            movie.save();
+            response.message = 'Downvoted!';
+
+        }else{
+            response.message = 'Error voting!';
+
+        }
+    }else if(alreadyUpvoted >= 0){
+        if(req.body.voteType === 'up'){
+            movie.upvotes.splice(alreadyUpvoted, 1);
+
+        }else if(req.body.voteType === 'down'){
+            movie.upvotes.splice(alreadyUpvoted, 1);
+            movie.downvotes.push(req.user.username);
+            
+        }else{
+            response.message = 'Error 2'
+        }
+        movie.save();
+    }else if(alreadyDownvoted >= 0){
+        if(req.body.voteType === 'up'){
+            movie.downvotes.splice(alreadyDownvoted, 1);
+
+        }else if(req.body.voteType === 'down'){
+            movie.downvotes.splice(alreadyDownvoted, 1);
+            movie.upvotes.push(req.user.username);
+            
+        }else{
+            response.message = 'Error 3'
+        }
+        movie.save();
+    }else{
+        response.message = 'Error 4'
+    }
+
+    res.json(response);
 })
 
 router.post('/', isLoggedIn ,async (req,res) => {
