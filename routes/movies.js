@@ -6,6 +6,7 @@ const isLoggedIn = require('../utils/isLoggedin');
 const checkMovieOwner = require('../utils/checkOwner');
 
 
+
 router.get('/', async (req,res) => {
     try{
         const movies = await Movie.find().exec()
@@ -36,12 +37,12 @@ router.post("/vote", isLoggedIn,  async(req,res) => {
         if(req.body.voteType === 'up'){
             movie.upvotes.push(req.user.username);
             movie.save();
-            response.message = 'Upvoted!';
+            response = {message: 'Upvoted!',code: 1};
             
         }else if(req.body.voteType === 'down'){
             movie.downvotes.push(req.user.username);
             movie.save();
-            response.message = 'Downvoted!';
+            response= {message: 'Downvoted!',code: -1};
 
         }else{
             response.message = 'Error voting!';
@@ -50,30 +51,36 @@ router.post("/vote", isLoggedIn,  async(req,res) => {
     }else if(alreadyUpvoted >= 0){
         if(req.body.voteType === 'up'){
             movie.upvotes.splice(alreadyUpvoted, 1);
+            response = {message: 'Upvote removed!',code: 0};
 
         }else if(req.body.voteType === 'down'){
             movie.upvotes.splice(alreadyUpvoted, 1);
             movie.downvotes.push(req.user.username);
+            response = {message: 'Downvoted!',code: -1};
             
         }else{
-            response.message = 'Error 2'
+            response = {message: 'err',code: "err"};
         }
         movie.save();
     }else if(alreadyDownvoted >= 0){
         if(req.body.voteType === 'up'){
             movie.downvotes.splice(alreadyDownvoted, 1);
+            response = {message: 'Upvoted!',code: 1};
 
         }else if(req.body.voteType === 'down'){
             movie.downvotes.splice(alreadyDownvoted, 1);
             movie.upvotes.push(req.user.username);
+            response = {message: 'Downvote removed!',code: 0};
             
         }else{
             response.message = 'Error 3'
+            response = {message: 'err!',code: 'err'};
         }
         movie.save();
     }else{
-        response.message = 'Error 4'
+        response = {message: 'ERUR!',code: 'err'};
     }
+    req.score = movie.upvotes.length - movie.downvotes.length;
 
     res.json(response);
 })

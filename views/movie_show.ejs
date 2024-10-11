@@ -43,12 +43,16 @@
             <button class="btn btn-success btn-lg mt-3 mb-4">Add Comment</button>
         </a>
         <div class="col-2">
-            <% if (user) { %>
+            <% if (user && movie.upvotes.indexOf(user.username) >= 0) { %>
+                <button id="upvote_btn" class="btn btn-success btn-lg mt-3"> + </button>
+            <% } else if (user) { %>
                 <button id="upvote_btn" class="btn btn-outline-success btn-lg mt-3"> + </button>
             <% } %>
-            <span id="score" class="mt-1 mx-2"> 10 </span>
-            <% if (user) { %>
-                <button id="downvote_btn" class="btn btn-outline-success btn-lg mt-3"> - </button>
+            <span id="score" class="mt-1 mx-2"> <%= movie.upvotes.length - movie.downvotes.length %> </span>
+            <% if (user && movie.downvotes.indexOf(user.username) >= 0) { %>
+                <button id="downvote_btn" class="btn btn-danger btn-lg mt-3"> - </button>
+            <% } else if (user) { %>
+                <button id="downvote_btn" class="btn btn-outline-danger btn-lg mt-3"> - </button>
             <% } %>
         </div>
     </div>
